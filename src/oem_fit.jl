@@ -1,6 +1,6 @@
 
-function oem(x::StridedMatrix{T},
-             y::StridedVector{T},
+function oem_fit(x::StridedMatrix{T},
+             y::StridedVector{T};
              intercept::Bool = true,
              standardize::Bool = true,
              nlambda::Int = 100,

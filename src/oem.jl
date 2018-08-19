@@ -8,7 +8,7 @@ using LinearAlgebra, Arpack
 using DataFrames, StaticArrays
 
 export
-    oem
+    oem_fit
 
 include("utils.jl")
 include("thresholds.jl")
