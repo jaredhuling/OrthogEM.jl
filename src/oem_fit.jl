@@ -1,13 +1,13 @@
 
-function oem_fit(x::StridedMatrix{T},
-             y::StridedVector{T};
-             intercept::Bool = true,
-             standardize::Bool = true,
-             nlambda::Int = 100,
-             maxit::Int = 1000,
-             tol::BLAS.BlasFloat = 1e-5,
-             lambda_min_ratio::BLAS.BlasFloat = 1e-3,
-             penalty_factor::StridedVector{T} = ones(Float64, size(x)[2])) where T <: BLAS.BlasFloat
+function oem_fit(x::AbstractMatrix{<:Real},
+                 y::AbstractVector{<:Real},
+                 intercept::Bool = true,
+                 standardize::Bool = true,
+                 nlambda::Int = 100,
+                 maxit::Int = 1000,
+                 tol::BLAS.BlasFloat = 1e-5,
+                 lambda_min_ratio::BLAS.BlasFloat = 1e-3,
+                 penalty_factor::AbstractVector{<:Real} = ones(Float64, size(x)[2]))
 
     n, p = size(x)
 

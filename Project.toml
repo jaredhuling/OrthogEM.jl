@@ -2,3 +2,6 @@ name = "oem"
 uuid = "c35d752a-a3c2-11e8-08c1-d17f73d105b0"
 authors = ["Jared Huling <jaredhuling@gmail.edu>"]
 version = "0.1.0"
+
+[deps]
+Gadfly = "c91e804a-d5a3-530f-b6f0-dfbca275c004"

@@ -1,7 +1,6 @@
 
 
-function softthresh(beta::StridedVector{T},
-                    penalty::StridedVector{T}) where T <: BLAS.BlasFloat
-    p = length(beta)
-    sign.(beta).*max.(beta - penalty, zeros(p))
+function softthresh(beta::AbstractVector{<:Real},
+                    penalty::AbstractVector{<:Real})
+    [max(bt - lam, 0.0) * sign(bt) for (bt, lam) in zip(beta, penalty)]
 end

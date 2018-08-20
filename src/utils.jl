@@ -1,30 +1,16 @@
 
 
-compute_maxlam = function(xty::StridedVector{T},
-                          penalty_factor::StridedVector{T})  where T <: BLAS.BlasFloat
-    pp = length(penalty_factor)
-    p = length(xty)
-
-    #if pp + 1 == p
-    #    deleteat!(penalty_factor, 1)
-    #elseif pp != p
-    #    error("wrong dimensions")
-    #end
-
-    if pp != p
-        error("wrong dimensions")
-    end
-
-    # compute largest value for lambda
-    mask = ones(p)
-    mask[penalty_factor .== 0.0] .= 0.0
-    pf2 = penalty_factor
-    pf2[pf2 .== 0] .= 1.0
-    mask ./= pf2
-    lambda_max = max(xty .* mask...)
+## This code was suggested by Doug Bates, August 20, 2018
+function compute_maxlam(xty::AbstractVector{<:Real},
+                         penalty_factor::AbstractVector{<:Real})
+    # compute largest value for lambda.
+    # we need to divide by penalty_factor (making sure
+    # not to divide by zero) to account for
+    # differential penalization
+    lambda_max = maximum(x / (iszero(pf) ? one(pf) : pf) for (x, pf) in zip(xty, penalty_factor))
 end
 
-make_steps_A = function(xtx::AbstractMatrix{T}) where T <: BLAS.BlasFloat
+function make_steps_A(xtx::AbstractMatrix{T}) where T <: BLAS.BlasFloat
     pp, p = size(xtx)
     d, v   = eigs(xtx, nev = 1)
     d      = reinterpret(Float64, d)[1]
@@ -35,10 +21,10 @@ make_steps_A = function(xtx::AbstractMatrix{T}) where T <: BLAS.BlasFloat
 end
 
 
-compute_xtx_y = function(x::StridedMatrix{T},
-                         y::StridedVector{T},
-                         intercept::Bool = true,
-                         standardize::Bool = true) where T <: BLAS.BlasFloat
+function compute_xtx_y(x::AbstractMatrix{<:Real},
+                       y::AbstractVector{<:Real},
+                       intercept::Bool = true,
+                       standardize::Bool = true)
 
     n, p = size(x)
 
