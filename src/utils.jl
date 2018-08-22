@@ -11,12 +11,17 @@ function compute_maxlam(xty::AbstractVector{<:Real},
 end
 
 function make_steps_A(xtx::AbstractMatrix{T}) where T <: BLAS.BlasFloat
-    pp, p = size(xtx)
-    d, v   = eigs(xtx, nev = 1)
+    pp, p  = size(xtx)
+
+    # compute largest eigenvalue
+    d, v   = eigs(xtx, nev = 1, which = :LR)
     d      = reinterpret(Float64, d)[1]
 
-    steps = repeat([d], outer = p)
-    A     = Diagonal(steps) - xtx
+    # make a vector of stepsizes based on d
+    steps  = repeat([d], outer = p)
+
+    # Calculate A from oem algorithm
+    A      = Diagonal(steps) - xtx
     steps, A, d
 end
 

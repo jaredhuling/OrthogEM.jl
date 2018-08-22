@@ -1,6 +1,6 @@
 
 function oem_fit(x::AbstractMatrix{<:Real},
-                 y::AbstractVector{<:Real},
+                 y::AbstractVector{<:Real};
                  intercept::Bool = true,
                  standardize::Bool = true,
                  nlambda::Int = 100,

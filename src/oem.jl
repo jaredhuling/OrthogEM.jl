@@ -1,6 +1,6 @@
 __precompile__()
 
-module oem
+module OrthogEM
 
 
 using Distributions
